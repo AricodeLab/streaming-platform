@@ -7,9 +7,7 @@ import * as zod from 'zod';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: zod.object({
-        dbURL: zod.string().min(1),
-      }),
+      
       envFilePath: './apps/users/.env',
     }),
   ],
