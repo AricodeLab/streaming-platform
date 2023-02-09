@@ -1,5 +1,12 @@
 {
-  "extends": "tsconfig/react-library.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true
+  },
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }
+

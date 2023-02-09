@@ -1,7 +1,7 @@
 import { AppProps } from "next/app";
 import "../globals.css";
 import { GlobalStyles } from "twin.macro";
-import { ChakraProvider } from "ui";
+import { ChakraProvider } from  "@chakra-ui/react";
 
 /* eslint-disable global-require */
 require("../mocks");
