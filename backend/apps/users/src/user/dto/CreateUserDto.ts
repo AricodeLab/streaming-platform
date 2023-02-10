@@ -1,8 +1,10 @@
-import { z } from "zod"
-const CreateUserDto = z.object({
-   
-    email: z.string().email(),
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-    password: z.string().min(1).max(10),
-})
-export default CreateUserDto
+export default class CreateUserDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
