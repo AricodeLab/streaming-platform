@@ -36,7 +36,7 @@ interface IRegisterForm {
   password: string;
 }
 
-export function RegisterForm() {
+function RegisterForm() {
   const toast = useToast();
 
   const signup = async (key: string, options: { arg: IRegisterForm }) => {
@@ -70,14 +70,8 @@ export function RegisterForm() {
         <Stack spacing="6">
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
             <Heading size={useBreakpointValue({ base: "xs", md: "2xl" })}>
-              CoderOne 👋
+            Smartv Premium
             </Heading>
-            <HStack spacing="1" justify="center">
-              <Text color="muted">Already have an account?</Text>
-              <Button variant="link" colorScheme="blue">
-                Log In
-              </Button>
-            </HStack>
           </Stack>
         </Stack>
         <Box
@@ -133,3 +127,4 @@ export function RegisterForm() {
     </Container>
   );
 }
+export default RegisterForm
