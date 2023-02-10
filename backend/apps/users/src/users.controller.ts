@@ -1,15 +1,20 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CurrentUser } from './currentUser.decorator';
-import { JwtAuthGuard, LocalAuthGuard } from "./guards"
+import { JwtAuthGuard, LocalAuthGuard } from './guards';
 
 import { User } from '@app/common/db/entity';
 
 @Controller('auth')
 export class UsersController {
   constructor(private readonly authService: UsersService) {}
+
+  @Get()
+  async a() {
+    return 'a';
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserRepository } from './db.User.repo';
+
 import {TypeOrmModule} from "@nestjs/typeorm/";
 import { User } from './entity';
 import ConfigDB from "@app/common/config/db.config"
-console.log(ConfigDB['DB_PASSWORD'])
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -20,6 +20,6 @@ console.log(ConfigDB['DB_PASSWORD'])
 
     }),
   ],
-  providers: [UserRepository],
+  providers: [],
 })
 export class DBModule {}

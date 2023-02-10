@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { DBModule} from '@app/common/db/db.module';
 import { JwtStrategy,LocalStrategy} from './strategies/';
 import { UserModule } from './user/user.module';
-import { UserRepository } from '@app/common/db/db.User.repo';
+
 import { UserService } from './user/user.service';
 import ConfigJWT from "@app/common/config/jwt.config"
 @Module({
@@ -24,7 +24,7 @@ import ConfigJWT from "@app/common/config/jwt.config"
     
   ],
   controllers: [UsersController],
-  providers: [UsersService,UserService,LocalStrategy,JwtStrategy,UserRepository],
+  providers: [UsersService,UserService,LocalStrategy,JwtStrategy],
 })
 export class UsersModule {}
 
