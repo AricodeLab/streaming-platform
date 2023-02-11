@@ -1,59 +1,55 @@
 import { z } from "zod";
-import axios from "axios";
 import useSWRMutation from "swr/mutation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { api } from "../service/api";
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
-  HStack,
   Input,
   Stack,
-  Text,
   useBreakpointValue,
   useColorModeValue,
   useToast,
 } from "ui";
-import { OAuthButtonGroup } from "./OAuthButtonGroup";
-
+import { useRouter } from "next/router";
 const validationSchema = z.object({
-  fullName: z.string(),
-  email: z.string().email(),
+  email: z.string().email("Email no es valido"),
   password: z.string(),
 });
-
 interface IRegisterForm {
   email: string;
-  fullName: string;
   password: string;
 }
 
 function RegisterForm() {
   const toast = useToast();
-
+  const router = useRouter()
   const signup = async (key: string, options: { arg: IRegisterForm }) => {
     const { arg } = options;
-    const response = await axios.post("/api/signup", arg);
-
+    
+    const response = await api.post("/api/signup", arg);
+    
     return response.data;
   };
 
   const { trigger } = useSWRMutation("/signup", signup, {
-    onSuccess: (data) =>
-      toast({ title: data.message, status: "success", position: "top-right" }),
+    onSuccess: (data) => {
+      toast({ title: data.message, status: "success", position: "top-right" });
+    },
+    onError(err, key, config) {
+      toast({title: err.message, status: "error", position: "top-right" })
+    },
   });
 
   const onSubmit = (values: IRegisterForm) => {
-    console.log("Values: ", values);
-    trigger(values);
+    router.push('/content')
+    //trigger(values);
   };
 
   const {
@@ -70,12 +66,12 @@ function RegisterForm() {
         <Stack spacing="6">
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
             <Heading size={useBreakpointValue({ base: "xs", md: "2xl" })}>
-            Smartv Premium
+              Smartv Premium
             </Heading>
           </Stack>
         </Stack>
         <Box
-          py={{ base: "0", sm: "8" }}
+          py={{ base: "8", sm: "8" }}
           px={{ base: "4", sm: "10" }}
           bg={useBreakpointValue({ base: "transparent", sm: "bg-surface" })}
           boxShadow={{ base: "none", sm: useColorModeValue("md", "md-dark") }}
@@ -84,12 +80,7 @@ function RegisterForm() {
           textColor="black"
         >
           <Stack spacing="6">
-            <Stack spacing="5">
-              <FormControl isInvalid={errors.fullName?.message ? true : false}>
-                <FormLabel htmlFor="full-name">Full Name</FormLabel>
-                <Input id="full-name" type="text" {...register("fullName")} />
-                <FormErrorMessage>Required!</FormErrorMessage>
-              </FormControl>
+            <Stack spacing="10">
               <FormControl isInvalid={errors.email?.message ? true : false}>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <Input id="email" type="email" {...register("email")} />
@@ -102,24 +93,16 @@ function RegisterForm() {
               </FormControl>
               {/* <PasswordField /> */}
             </Stack>
-            <HStack justify="space-between">
-              <Checkbox defaultChecked>Remember me</Checkbox>
-              <Button variant="link" colorScheme="blue" size="sm">
-                Forgot password?
-              </Button>
-            </HStack>
+
             <Stack spacing="6">
-              <Button variant="outline" onClick={handleSubmit(onSubmit)}>
-                Sign up
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                size="sm"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Login
               </Button>
-              <HStack>
-                <Divider />
-                <Text fontSize="sm" whiteSpace="nowrap" color="muted">
-                  or continue with
-                </Text>
-                <Divider />
-              </HStack>
-              <OAuthButtonGroup />
             </Stack>
           </Stack>
         </Box>
@@ -127,4 +110,4 @@ function RegisterForm() {
     </Container>
   );
 }
-export default RegisterForm
+export default RegisterForm;
