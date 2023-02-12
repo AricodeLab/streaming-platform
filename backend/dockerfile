@@ -17,4 +17,4 @@ RUN yarn install
 COPY . .
 
 # Specify the command to run when the container starts
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start::dev" ]

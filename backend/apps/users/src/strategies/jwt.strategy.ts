@@ -10,11 +10,13 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly usersService: UserService,
   ) {
-    console.log(ConfigJWT)
+    
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
-          return request?.Authentication;
+          const cookie: String = request.headers.cookie
+          console.log(cookie.split("=")[1])
+          return cookie.split("=")[1]
         },
       ]),
       secretOrKey: ConfigJWT['JWT_SECRET'],

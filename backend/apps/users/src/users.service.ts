@@ -17,18 +17,19 @@ export class UsersService {
     const tokenPayload: TokenPayload = {
       userId: user.id.toString(),
     };
-    console.log(ConfigJWT['JWT_EXPIRATION'])
+  
     const expires = new Date();
     expires.setSeconds(
       expires.getSeconds() + +ConfigJWT['JWT_EXPIRATION'],
     );
 
     const token = this.jwtService.sign(tokenPayload);
-
+      
     return response.cookie('Authentication', token, {
       httpOnly: true,
       expires,
     });
+    
   }
 
   logout(response: Response) {

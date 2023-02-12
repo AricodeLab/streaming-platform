@@ -1,6 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto';
 import { UserService } from './user.service';
+import { CurrentUser } from '../currentUser.decorator';
+import { User } from '@app/common/db/entity';
+import { JwtAuthGuard } from '../guards';
 
 @Controller('auth/')
 export class UserController {
@@ -9,10 +12,11 @@ export class UserController {
   async a() {
     return 'a';
   }
-
-  @Get('/:id')
-  async getUser(@Param("id") id: number) {
-    return await this.userService.getUser(id);
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  async getUser( @CurrentUser() user: User,) {
+    console.log(user)
+    return "a"
   }
   @Post()
   async createUser(@Body() request: CreateUserDto) {
