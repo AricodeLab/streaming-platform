@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from './dto';
+
 import { UserService } from './user.service';
 import { CurrentUser } from '../currentUser.decorator';
 import { User } from '@app/common/db/entity';
@@ -15,8 +15,5 @@ export class UserController {
     delete user.password
     return user
   }
-  @Post("register")
-  async createUser(@Body() request: CreateUserDto) {
-    return this.userService.createUser(request);
-  }
+  
 }
