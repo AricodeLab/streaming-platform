@@ -57,3 +57,17 @@ Para pegar as informações de usuario
   "email" : "pcaladomoura@gmail.com"
 }
 ```
+
+#### .env
+
+criar um .env file no root do projeto com as seguintes keys
+
+```py
+DB_HOST=<host do port>
+DB_PORT=<port da db> # default: 5432 
+DB_USERNAME=<usuario do db> # default: postgres
+DB_PASSWORD=<senha do usuario> # default: wordb123
+DB_NAME=<nome da database> # default: work_db
+JWT_SECRET=<da para entender> # default: secret
+JWT_EXPIRATION=<tempo em segundos quanto dura a autenticação> # default: 864000 , 10 dias
+```
