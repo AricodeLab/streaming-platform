@@ -11,14 +11,14 @@ import { User } from '@app/common/db/entity';
 export class UserService {
   constructor() {}
 
-  async createUser(request: CreateUserDto) {
+  async createUser(request: CreateUserDto) : Promise<Object> {
     await this.validateCreateUserRequest(request);
     const user = await User.create({
       ...request,
       password: await bcrypt.hash(request.password, 10),
     });
     user.save()
-    return user;
+    return {msg : "User created"}
   }
 
   private async validateCreateUserRequest(request: CreateUserDto) {
