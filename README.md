@@ -4,5 +4,5 @@ bora
 
 ## PGAdmin:
 
-- http://localhost:80
+- http://localhost:5050
 - As cred ta no compose
