@@ -1,8 +1,10 @@
 import FootBar from "./footbar";
+import Navbar from "./header";
 function Layout({ children }) {
   return (
     <>
-      <main >{children}</main>
+      <Navbar />
+      <main>{children}</main>
       <FootBar />
     </>
   );

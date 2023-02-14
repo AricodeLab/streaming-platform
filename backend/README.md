@@ -46,7 +46,7 @@ Onde se fará o login do usuario, se devera especificar o email e password
   "msg": "you are login"
 }
 ```
-"NAO é necesario colocar token nos headers por ja coloco automaticamente no cookies no formato Authorization=token"
+*NAO é necesario colocar token nos headers por ja coloco automaticamente no cookies no formato Authorization=token*
 
 * `/auth/me`
 Para pegar as informações de usuario

@@ -12,9 +12,9 @@ export default function MyApp(props: AppProps) {
     <>
       <GlobalStyles />
       <ChakraProvider>
-        <Layout>
+        
           <Component {...pageProps} />
-        </Layout>
+        
       </ChakraProvider>
     </>
   );

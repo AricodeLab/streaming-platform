@@ -44,7 +44,7 @@ export class UsersService {
   }
   async createUser(request: CreateUserDto) : Promise<Object> {
     await this.validateCreateUserRequest(request);
-    const user = await User.create({
+    const user = User.create({
       ...request,
       password: await bcrypt.hash(request.password, 10),
     });
