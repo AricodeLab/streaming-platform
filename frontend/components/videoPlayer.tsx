@@ -9,20 +9,25 @@ function VideoPlay ()  {
     fluid: true,
     autoplay: true,
     controls: true,
-    preload: "metadata",
+    preload: "none",
     sources: [
       {
-        src: "https://v3.szjal.cn/20191101/PZzNpqB1/index.m3u8",
-        type: "application/x-mpegURL"
+        src: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
+        type: "application/x-mpegURL",
       }
-    ]
+    ],
+    liveui: true,
   };
   const videoNode = useRef(null);
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
     if (videoNode.current) {
-      const _player = videojs(videoNode.current, play);
+      const _player = videojs(videoNode.current, {...play},()=>{
+        console.log("player is ready")
+        
+      });
+     
       setPlayer(_player);
       return () => {
         if (player !== null) {
@@ -30,7 +35,9 @@ function VideoPlay ()  {
         }
       };
     }
+    
   }, []);
+
   return (
     <div data-vjs-player>
       <video ref={videoNode} className="video-js"></video>
