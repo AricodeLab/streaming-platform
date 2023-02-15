@@ -18,6 +18,7 @@ export class UsersService {
   ) {}
 
   async login(user: User, response: Response) {
+    console.log(user)
     const tokenPayload: TokenPayload = {
       userId: user.id.toString(),
     };
@@ -43,6 +44,7 @@ export class UsersService {
     });
   }
   async createUser(request: CreateUserDto) : Promise<Object> {
+    console.log('penis')
     await this.validateCreateUserRequest(request);
     const user = User.create({
       ...request,

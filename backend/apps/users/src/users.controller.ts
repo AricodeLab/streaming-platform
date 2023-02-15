@@ -9,7 +9,8 @@ import { User } from '@app/common/db/entity';
 
 @Controller('auth')
 export class UsersController {
-  usersService: any;
+ 
+
   constructor(private readonly authService: UsersService) {}
 
 
@@ -24,6 +25,6 @@ export class UsersController {
   }
   @Post("register")
   async createUser(@Body() request: CreateUserDto) {
-    return this.usersService.createUser(request);
+    return this.authService.createUser(request);
   }
 }

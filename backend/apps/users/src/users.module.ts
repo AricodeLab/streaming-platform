@@ -22,6 +22,7 @@ import ConfigJWT from "@app/common/config/jwt.config"
 
     }),
     
+    
   ],
   controllers: [UsersController],
   providers: [UsersService,UserService,LocalStrategy,JwtStrategy],
