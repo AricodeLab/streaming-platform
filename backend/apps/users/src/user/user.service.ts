@@ -7,11 +7,10 @@ import * as bcrypt from 'bcrypt';
 
 
 import { User } from '@app/common/db/entity';
+
 @Injectable()
 export class UserService {
   constructor() {}
-
- 
 
   async validateUser(email: string, password: string) {
    

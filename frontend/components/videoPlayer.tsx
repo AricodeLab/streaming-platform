@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
-function VideoPlay ()  {
-
+function VideoPlay() {
   const play = {
     fill: true,
     fluid: true,
@@ -23,11 +22,9 @@ function VideoPlay ()  {
 
   useEffect(() => {
     if (videoNode.current) {
-      const _player = videojs(videoNode.current, {...play},()=>{
-        console.log("player is ready")
-        
-      });
-     
+      const _player = videojs(videoNode.current, play, () =>
+        console.log("Video iniciado")
+      );
       setPlayer(_player);
       return () => {
         if (player !== null) {
@@ -35,15 +32,13 @@ function VideoPlay ()  {
         }
       };
     }
-    
-  }, []);
+  }, [setPlayer]);
 
   return (
     <div data-vjs-player>
-      <video ref={videoNode} className="video-js"></video>
+      <video ref={videoNode} className="video-js "></video>
     </div>
   );
-};
-
+}
 
 export default VideoPlay;

@@ -8,13 +8,12 @@ FROM node:18.10.0-alpine
 WORKDIR /apps
 
 # Copy the package.json and yarn.lock files to the container
-COPY package.json yarn.lock ./
+COPY . .
 
 # Install the dependencies
 RUN yarn install
 
-# Copy the rest of the application files to the container
-COPY . .
+
 
 # Specify the command to run when the container starts
 CMD [ "yarn", "start:dev" ]
