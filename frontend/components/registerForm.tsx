@@ -49,7 +49,7 @@ function RegisterForm() {
 
   const onSubmit = (values: IRegisterForm) => {
     router.push('/content')
-    //trigger(values);
+    trigger(values);
   };
 
   const {
