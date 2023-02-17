@@ -23,7 +23,7 @@ function VideoPlay() {
     fluid: true,
     autoplay: true,
     controls: true,
-    preload: "none",
+    preload: "true",
     sources: [
       {
         src: "http://xyz.lattv.com.co:8080/playlist/Joao8095/Joao8095/m3u_plus",
@@ -39,6 +39,7 @@ function VideoPlay() {
     if (videoNode.current) {
       const _player = videojs(videoNode.current, play, () =>{
         videojs.log("Video iniciado")
+        
         _player.on("start", ()=>{
           const a = new Date()
           videojs.log("video start at " + a.getHours() + ":" +  a.getMinutes())
