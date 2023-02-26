@@ -9,29 +9,21 @@ const play = {
   fluid: true,
   autoplay: true,
   controls: true,
-  preload: "none",
+  preload: "metadata",
   sources: [
     {
-      src: "http://disfruta.net:80/tvlatvgo152728e/XfnGyhSif8/1059",
-      type: "application/x-mpegURL",
-    },
-  ],
-  html5: {
-    hls: {
-      withCredentials: true,
-    },
-  },
+      src: "http://xyz.lattv.com.co:8080/Smartvpremium/Smartvpremium/150839.m3u8",
+      type: "application/x-mpegURL"
+    }
+  ]
 };
 
 function VideoPlay1() {
   const videoNode = useRef(null);
   const [player, setPlayer] = useState(null);
-
   useEffect(() => {
     if (videoNode.current) {
-      const _player = videojs(videoNode.current, play, () =>
-        console.log("Video iniciado")
-      );
+      const _player = videojs(videoNode.current, play);
       setPlayer(_player);
       return () => {
         if (player !== null) {
@@ -39,18 +31,17 @@ function VideoPlay1() {
         }
       };
     }
-  }, [setPlayer]);
+  }, []);
+
   return (
     <div data-vjs-player>
-      <video ref={videoNode} className="video-js "></video>
+      <video ref={videoNode} className="video-js"></video>
     </div>
   );
 }
 function VideoPlay() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Hls url="http://disfruta.net:80/tvlatvgo152728e/XfnGyhSif8/1059" />
-    </Suspense>
+    <ReactPlayer url="http://xyz.lattv.com.co:8080/Smartvpremium/Smartvpremium/150827.m3u8" playing controls />
   );
 }
 export default VideoPlay;
