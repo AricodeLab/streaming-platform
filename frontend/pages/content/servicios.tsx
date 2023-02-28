@@ -1,5 +1,7 @@
 import Layout from "../../components/layout";
+import StreamPlayer from "../../components/streamPlayer";
 import VideoPlay from "../../components/videoPlayer";
+
 
 export default function Web() {
   return (

@@ -1,57 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
-
-const links = [
-  {
-    src: "http://xyz.lattv.com.co:8080/playlist/Joao8095/Joao8095/m3u?output=rtmp",
-    type: "application/x-mpegURL",
-    tipo: "Lista M3u Standard-RTMP",
-    tempo_para_carregar: "2m"
+import "videojs-contrib-hls"
+import Script from "next/script";
+import { playerLog } from "../libs";
+const play = {
+  fill: true,
+  fluid: true,
+  autoplay: true,
+  controls: true,
+  preload: "none",
+  sources: [
+    {
+      src: "http://xyz.lattv.com.co:8080/Smartvpremium/Smartvpremium/150805",
+      type: "application/x-mpegURL",
+    },
+  ],
+  html5: {
+    hls: {
+      enableLowInitialPlaylist: true,
+      smoothQualityChange: true,
+      overrideNative: true,
+      useNetworkInformationApi: true,
+      experimentalBufferBasedABR: true
+    }
   },
-  {
-    src: "http://xyz.lattv.com.co:8080/playlist/Joao8095/Joao8095/m3u?output=hls",
-    type: "application/x-mpegURL",
-    tipo: " Lista M3u Standard-HLS "
-  }
-
-]
-
+  liveui: true
+  
+};
 function VideoPlay() {
-  const play = {
-    fill: true,
-    fluid: true,
-    autoplay: true,
-    controls: true,
-    preload: "true",
-    sources: [
-      {
-        src: "http://xyz.lattv.com.co:8080/playlist/Joao8095/Joao8095/m3u_plus",
-        type: "application/x-mpegURL",
-      }
-    ],
-    liveui: true,
-  };
+  
+
   const videoNode = useRef(null);
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
     if (videoNode.current) {
+
       const _player = videojs(videoNode.current, play, () =>{
-        videojs.log("Video iniciado")
-        
-        _player.on("start", ()=>{
-          const a = new Date()
-          videojs.log("video start at " + a.getHours() + ":" +  a.getMinutes())
-        })
-        _player.on("ready", ()=>{
-          const a = new Date()
-          videojs.log("video ready at " + a.getHours() + ":" +  a.getMinutes())
-        })
-        _player.on('play', function() {
-          const a = new Date()
-          videojs.log("video play at " + a.getHours() + ":" +  a.getMinutes())
-        });
+        console.log("Video iniciado")
+        playerLog(_player)
+  
       });
       setPlayer(_player);
       return () => {
@@ -60,12 +49,31 @@ function VideoPlay() {
         }
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setPlayer]);
-
   return (
     <div data-vjs-player>
       <video ref={videoNode} className="video-js"></video>
+      <link
+        href="https://vjs.zencdn.net/7.15.4/video-js.min.css"
+        rel="stylesheet"
+        integrity="sha384-qtMeiqNYAEkWJHm4yfDJi9XsCO4YFjRUcGtRZP/IS/AMKpZlLqG3qll60dD9okzt"
+        crossOrigin="anonymous"
+      />
+      <Script
+        src={`https://cdn.jsdelivr.net/npm/hls.js@latest`}
+        integrity="sha384-nfDWkwLZm+MQCYH9V7xmx/aKvJgigB49+oSiio5bKavhAWZgPO7IaMvgO9N+ulqO"
+        crossOrigin="anonymous"
+        
+      />
+      <Script
+        src={`https://cdn.jsdelivr.net/npm/videojs-contrib-hls@latest/dist/videojs-contrib-hls.min.js`}
+        integrity="sha384-hVhJZGzv7R+L02c9B7VWTxgj2NyPAyfl84tuwz5It5RYn8pGVQuhZKjSy/UdX0NR"
+        crossOrigin="anonymous"
+      />
+
     </div>
+    
   );
 }
 
