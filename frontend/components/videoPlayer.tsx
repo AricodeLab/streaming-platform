@@ -1,74 +1,108 @@
-import { Suspense, useEffect, useRef, useState } from "react";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
+import React, { FC, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import styles from './Home.module.css';
+import axios from 'axios';
 
-import { playerLog } from "../libs";
-import Script from "next/script";
-import ReactPlayer from  'react-player'
-const play = {
-  fill: true,
-  fluid: true,
-  autoplay: true,
-  controls: true,
-  preload: "none",
-  sources: [
-    {
-      src : "162.212.152.104:25461/RCNWeb-1/Live/36",
-      type: "application/x-mpegURL",
-    },
-  ],
-  liveui: true
-  
+
+
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+
+type Props = {
+	id: number;
+	title: string;
+	streaming_url: string;
 };
 
-function VideoPlay1() {
+const excludedChannels = [
+	'Euronew',
+  'DWA',
+];
 
-  const videoNode = useRef(null);
-  const [player, setPlayer] = useState(null);
-  useEffect(() => {
-    if (videoNode.current) {
-
-
-      const _player = videojs(videoNode.current, play, () =>{
-        console.log("Video iniciado")
-        playerLog(_player)
-  
-      });
-      setPlayer(_player);
-      return () => {
-        if (player !== null) {
-          player.dispose();
-        }
-      };
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return (
-    <div data-vjs-player>
-      <video ref={videoNode} className="video-js"></video>
-    </div>
-    )
+interface Channel {
+	id: number;
+	title: string;
+	streaming_url: string;
 }
-function VideoPlay() {
-  const videoNode = useRef(null);
-  const [player, setPlayer] = useState(null);
-  useEffect(() => {
-    if (videoNode.current) {
-      const _player = videojs(videoNode.current, play);
-      setPlayer(_player);
-      return () => {
-        if (player !== null) {
-          player.dispose();
-        }
-      };
-    }
-  }, []);
 
-  return (
-    <div data-vjs-player>
-      <video ref={videoNode} className="video-js"></video>
-    </div>
-  );
+const VideoPlayer: FC<Props> = () => {
 
-}
-export default VideoPlay;
+	const [channels, setChannels] = useState<Channel[]>([]);
+	const [selected, setSelected] = useState<Channel | null>(null);
+
+	useEffect(() => {
+		fetchChannels();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const fetchChannels = async () => {
+		try {
+			const iptv = await axios.get(
+				'https://raw.githubusercontent.com/mario1234563119/tvfs/main/plalistfuls.txt',
+			);
+			const channelsData = m3uToObj(iptv.data);
+			setChannels(channelsData);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const m3uToObj = (m3u: string): Channel[] => {
+		return m3u
+			.replace('#EXTM3U', '')
+			.split('#EXTINF:-1 ')
+			.slice(1)
+			.map(function (str, index) {
+				const line = str.split(',');
+				const info = line[1].split('\n');
+
+				return {
+					id: index + 1,
+					title: info[0],
+					streaming_url: info[1],
+				};
+			})
+			.filter((ch) => !excludedChannels.includes(ch.title));
+	};
+
+	const chooseChannel = (e: React.MouseEvent, channel: Channel) => {
+		e.preventDefault();
+		setSelected(channel);
+	};
+
+	const channelsList = channels.map((ch) => (
+		<div key={ch.id} onClick={(e) => chooseChannel(e, ch)}>
+			{ch.title}
+		</div>
+	));
+
+	return (
+		<main className={styles.main}>
+			<Head>
+				<title>TV WS</title>
+				<link rel="icon" href="/favicon.ico" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+			</Head>
+
+			<h1 className={styles.title}>TV SPAÑA</h1>
+
+			<div className={styles.grid}>{channelsList}</div>
+
+			{selected ? (
+				<>
+					<h1>{selected.title}</h1>
+					<p>estas mirando: {selected.title}</p>
+					<ReactPlayer
+						className="player-wrapper"
+						url={selected.streaming_url}
+						controls
+						playing
+						width="100%"
+						height="100%"
+					/>
+				</>
+			) : null}
+		</main>
+	);
+};
+export default VideoPlayer
