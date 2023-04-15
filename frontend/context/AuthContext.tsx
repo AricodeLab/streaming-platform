@@ -1,4 +1,4 @@
-import  { createContext, use, useEffect, useState } from "react";
+import  { createContext, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
 import { api, recoverUserInfo } from "../service/api";
@@ -8,6 +8,7 @@ type AuthContextType = {
   user: User | null;
   signIn: (data: FormData) => Promise<void>;
   singUp: (data: FormData) => Promise<void>;
+  logOut: () => void;
 };
 
 type FormData = {
@@ -58,12 +59,11 @@ export function AuthProvider({ children }: any) {
       maxAge: 60 * 60 * 1, // 1h
     });
     api.defaults.headers["Authorization"] = `Bearer ${token}`;
-
     setUser(user);
-    await Router.push("/dashboard");
+    await Router.push("/content");
   };
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, singUp }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, singUp,logOut }}>
       {children}
     </AuthContext.Provider>
   );

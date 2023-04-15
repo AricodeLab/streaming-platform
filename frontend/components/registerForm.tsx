@@ -40,6 +40,7 @@ function RegisterForm() {
 
   const { trigger } = useSWRMutation("/signup", signup, {
     onSuccess: (data) => {
+      router.push("/content");
       toast({ title: data.message, status: "success", position: "top-right" });
     },
     onError(err, key, config) {
@@ -48,9 +49,7 @@ function RegisterForm() {
   });
 
   const onSubmit = (values: IRegisterForm) => {
-    console.log(values);
-    console.log(2);
-    router.push("/content");
+    
     trigger(values);
   };
 

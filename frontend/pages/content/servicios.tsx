@@ -1,9 +1,12 @@
+import { useEffect,useContext } from "react";
 import Layout from "../../components/layout";
-
+import { AuthContext } from "../../context/AuthContext";
 import VideoPlay from "../../components/videoPlayer";
+import {api} from "../../service/api"
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
+export  function Web() {
 
-
-export default function Web() {
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
@@ -11,4 +14,23 @@ export default function Web() {
       </div>
     </Layout>
   );
+}
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const { ['nextauth.token']: token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+
+
+  return {
+    props: {}
+  }
 }
