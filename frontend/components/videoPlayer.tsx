@@ -52,7 +52,7 @@ const VideoPlayer: FC<Props> = () => {
 			.replace('#EXTM3U', '')
 			.split('#EXTINF:-1 ')
 			.slice(1)
-			.map(function (str, index) {
+			.map(function (str:string, index:number) {
 				const line = str.split(',');
 				const info = line[1].split('\n');
 
