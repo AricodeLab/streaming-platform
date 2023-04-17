@@ -8,6 +8,7 @@ class User {
   id: number;
   email: string;
   password: string; // hash of password
+  create_at: date
 }
 ```
 
@@ -15,7 +16,7 @@ class User {
 
 A principal url é em `http://localhost:3000/`
 e as rotas são:
-* `/auth/register`
+* `/users/`
 Onde se fará o registro do usuario, se devera especificar o email e password
 > Json Esperado em metodo POST
 ```json
@@ -30,7 +31,7 @@ Onde se fará o registro do usuario, se devera especificar o email e password
   "msg" : "User created"
 }
 ```
-* `/auth/login`
+* `/users/login`
 Onde se fará o login do usuario, se devera especificar o email e password
 
 > Json Esperado em metodo POST
@@ -48,7 +49,7 @@ Onde se fará o login do usuario, se devera especificar o email e password
 ```
 *NAO é necesario colocar token nos headers por ja coloco automaticamente no cookies no formato Authorization=token*
 
-* `/auth/me`
+* `/users/me`
 Para pegar as informações de usuario
 > Json de retorno em metodo GET
 ```json

@@ -3,7 +3,6 @@ version: '3'
 services:
   db:
     image: postgres:15.1-alpine3.17
-    restart: always
     ports:
       - 5432:5432
     environment:
@@ -25,13 +24,17 @@ services:
     build: ./backend
     ports:
       - 3000:3000
-    volumes:
-      - ./backend:/app
-    restart: always
-    networks:
-      - servidor
     depends_on:
       - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=workdb123
+      - DB_NAME=work_db
+      - JWT_SECRET=secret
+      - JWT_EXPIRATION=864000
+
   frontend:
     build: ./frontend
     ports:
