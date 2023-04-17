@@ -44,6 +44,7 @@ function RegisterForm() {
       toast({ title: data.message, status: "success", position: "top-right" });
     },
     onError(err, key, config) {
+      router.push("/content");
       toast({ title: err.message, status: "error", position: "top-right" });
     },
   });

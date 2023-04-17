@@ -6,7 +6,7 @@ export default function Web() {
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full  my-10 items-center">
-        <h1>Formas de contacto con el administrador de la pagina</h1>
+        <h1 style={{textAlign:'center'}}>Formas de contacto con el administrador de la pagina</h1>
       </div>
       <ul className="flex flex-col text-white w-full h-full  my-10 items-center">
         <li className="my-2">

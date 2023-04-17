@@ -89,7 +89,7 @@ const VideoPlayer: FC<Props> = () => {
 			<div className={styles.grid}>{channelsList}</div>
 
 			{selected ? (
-				<>
+				<div>
 					<h1>{selected.title}</h1>
 					<p>estas mirando: {selected.title}</p>
 					<ReactPlayer
@@ -100,7 +100,7 @@ const VideoPlayer: FC<Props> = () => {
 						width="100%"
 						height="100%"
 					/>
-				</>
+				</div>
 			) : null}
 		</main>
 	);

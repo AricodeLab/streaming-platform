@@ -5,7 +5,7 @@ import VideoPlay from "../../components/videoPlayer";
 import {api} from "../../service/api"
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
-export  function Web() {
+export  default function Web() {
 
   return (
     <Layout>
@@ -18,8 +18,7 @@ export  function Web() {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { ['nextauth.token']: token } = parseCookies(ctx)
-
-  if (!token) {
+  if (token) {
     return {
       redirect: {
         destination: '/',
