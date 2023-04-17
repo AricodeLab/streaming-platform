@@ -11,9 +11,8 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getUser( @CurrentUser() user: User,) {
-    delete user.password
-    return user
+  async getUser(@CurrentUser() user: User) {
+    delete user.password;
+    return user;
   }
-  
 }

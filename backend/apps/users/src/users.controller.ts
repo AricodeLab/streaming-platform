@@ -9,10 +9,7 @@ import { User } from '@app/common/db/entity';
 
 @Controller('auth')
 export class UsersController {
- 
-
   constructor(private readonly authService: UsersService) {}
-
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -21,9 +18,9 @@ export class UsersController {
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authService.login(user, response);
-    response.send({msg: "you are login"});
+    response.send({ msg: 'you are login' });
   }
-  @Post("register")
+  @Post('register')
   async createUser(@Body() request: CreateUserDto) {
     return this.authService.createUser(request);
   }
