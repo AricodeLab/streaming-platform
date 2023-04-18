@@ -33,18 +33,17 @@ function RegisterForm() {
   const signup = async (key: string, options: { arg: IRegisterForm }) => {
     const { arg } = options;
 
-    const response = await api.post("/api/signup", arg);
+    const response = await api.post("/users/login", arg);
 
     return response.data;
   };
 
-  const { trigger } = useSWRMutation("/signup", signup, {
+  const { trigger } = useSWRMutation("/login", signup, {
     onSuccess: (data) => {
       router.push("/content");
       toast({ title: data.message, status: "success", position: "top-right" });
     },
     onError(err, key, config) {
-      router.push("/content");
       toast({ title: err.message, status: "error", position: "top-right" });
     },
   });

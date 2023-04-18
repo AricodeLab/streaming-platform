@@ -19,9 +19,9 @@ import { CurrentUser } from './currentUser.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
+  @Get('test')
   test(): string {
-    return 'hello world';
+    return 'hello';
   }
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -46,7 +46,7 @@ export class UsersController {
       return user;
     }
   }
-  @UseGuards(JwtAuthGuard)
+
   //create user
   @Post()
   async create(@Body() user: User): Promise<User> {

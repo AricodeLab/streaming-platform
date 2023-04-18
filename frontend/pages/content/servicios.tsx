@@ -18,7 +18,7 @@ export  default function Web() {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { ['nextauth.token']: token } = parseCookies(ctx)
-  if (token) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
