@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 @Injectable()
 export class UsersService {
   constructor(
@@ -12,21 +13,39 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user: User, response) {
+  async login(user: User, response: Response): Promise<[string,Response]> {
+
     const tokenPayload = {
       userId: user.id.toString(),
     };
-
+  
+    if (user.plazo.getTime() > new Date().getTime()){
+      throw new UnauthorizedException('Cuenta con plazo vencido');
+    }
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + +process.env.JWT_EXPIRATION);
 
     const token = this.jwtService.sign(tokenPayload);
-
-    return response.cookie('Authentication', token, {
+    
+    return [token ,response.cookie('Authentication', token, {
       httpOnly: true,
       expires,
-    });
+    })];
   }
+  
+
+  async validateUser(email: string, password: string) {
+    const user = await User.findOneBy({ email: email });
+
+    const passwordIsValid = password == user.password
+   
+    if (!passwordIsValid) {
+      throw new UnauthorizedException('Email o contrasena equivocada.');
+    }
+
+    return user;
+  }
+  
   // get all users
   async findall(): Promise<User[]> {
     return await this.usersRepository.find();
@@ -35,20 +54,6 @@ export class UsersService {
   // get one user
   async findOne(id: number): Promise<User> {
     return await this.usersRepository.findOne({ where: { id } });
-  }
-  async validateUser(email: string, password: string) {
-    const user = await User.findOneBy({ email: email });
-
-    const passwordIsValid = await bcrypt.compare(
-      password,
-      user?.password || '',
-    );
-
-    if (!passwordIsValid) {
-      throw new UnauthorizedException('Credentials are not valid.');
-    }
-
-    return user;
   }
   //create user
   async create(user: User): Promise<User> {

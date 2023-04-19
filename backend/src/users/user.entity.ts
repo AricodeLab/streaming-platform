@@ -19,4 +19,7 @@ export class User extends BaseEntity {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column()
+  plazo: Date;
 }

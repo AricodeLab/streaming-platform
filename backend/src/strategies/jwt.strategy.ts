@@ -14,7 +14,9 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
           const cookie: string = request?.headers?.cookie;
-
+          if(!cookie){
+            throw new UnauthorizedException("JWT invalido");
+          }
           return cookie.split('=')[1];
         },
       ]),
@@ -26,7 +28,7 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
     try {
       return await this.usersService.findOne(+userId);
     } catch (err) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Email o contrasena invalido");
     }
   }
 }
