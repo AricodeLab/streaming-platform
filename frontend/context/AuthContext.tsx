@@ -14,6 +14,8 @@ interface AuthContextData {
   logout: () => void;
   user: User;
   error: string;
+  setError: (errorMessage: string) => void;
+  setIsAuthenticated: (Authenticated: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -29,16 +31,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         "/users/login",
         data
       );
-
+   
       if (response.status == 201) {
         const { msg, token } = response.data;
-        alert(msg);
         setCookie(undefined, "Authentication", token);
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
         setIsAuthenticated(true);
       }
     } catch (e) {
-      setError(e.data);
+
+
+      console.log(e)
+      setError(e.response.data.message);
     }
   };
 
@@ -46,13 +50,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     destroyCookie(undefined, "Authentication") && setIsAuthenticated(false);
   };
 
-  useEffect(() => {
-    const { "Authentication.token": token } = parseCookies();
-    if (token) recoverUserInfo().then((res) => console.log(res.data[0]?.useEmail));
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signUp, logout, user, error }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        signUp,
+        logout,
+        user,
+        error,
+        setError,
+        setIsAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

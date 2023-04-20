@@ -55,7 +55,7 @@ export class UsersController {
 
     const userTokens = this.Invalidtokens[userIndex].userTokens;
     const lastToken = userTokens[userTokens.length - 1];
-
+    console.log(token +"|||" + lastToken)
     return token === lastToken;
   }
 
@@ -79,10 +79,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getUser(@CurrentUser() user: User, @Req() request) {
+    
     console.log(this.Invalidtokens);
     const cookie = request?.headers.cookie;
     if (!this.isTokenValid(user.email, cookie.split('=')[1])) {
-      throw new UnauthorizedException('invalid login');
+      throw new UnauthorizedException('Usuario ya ha hecho login en otro dispositivo o necesitas hacer login de vuelta');
     }
 
     delete user.password;

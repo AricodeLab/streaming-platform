@@ -7,6 +7,7 @@ import  RegisterForm  from "../components/registerForm";
 // `;
 
 export default function Web() {
+
   return (
     <div className="flex flex-col p-10 text-white w-full h-full items-center">
       <RegisterForm />

@@ -17,8 +17,8 @@ export class UsersService {
     const tokenPayload = {
       userId: user.id.toString(),
     };
-
-    if (user.plazo.getTime() < new Date().getTime()) {
+    const date = new Date().getTime()
+    if (user.plazo.getTime() < date) {
       throw new UnauthorizedException('Cuenta con plazo vencido');
     }
     const expires = new Date();
@@ -37,11 +37,14 @@ export class UsersService {
 
   async validateUser(email: string, password: string) {
     const user = await User.findOneBy({ email: email });
-
+    if(!user){
+      throw new UnauthorizedException('Email o contraseña equivocada.');
+    
+    }
     const passwordIsValid = password == user.password;
 
     if (!passwordIsValid) {
-      throw new UnauthorizedException('Email o contrasena equivocada.');
+      throw new UnauthorizedException('Email o contraseña equivocada.');
     }
 
     return user;

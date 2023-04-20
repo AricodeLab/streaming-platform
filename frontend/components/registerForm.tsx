@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/router";
 
 import { useAuth } from "../hooks/useAuth";
+import { useEffect } from "react";
 const validationSchema = z.object({
   email: z.string().email("Email no es valido"),
   password: z.string(),
@@ -30,15 +31,22 @@ interface IRegisterForm {
 function RegisterForm() {
   const toast = useToast();
   const router = useRouter();
-  const { signUp, isAuthenticated } = useAuth();
-  const onSubmit = (values: IRegisterForm) => {
-    try {
-      signUp(values);
-
-      if (isAuthenticated) router.push("/content");
-    } catch (e) {
-      toast({ title: "Error", status: "error", position: "top" });
+  const { signUp, isAuthenticated, error,setError,setIsAuthenticated } = useAuth();
+  useEffect(() => {
+   
+    if (router.query.message){
+      setError(router.query.message.toString())
     }
+    if (error) {
+      toast({ title: error, status: "error", position: "top" })
+      setIsAuthenticated(false)
+  };
+  }, [error]);
+  useEffect(() => {
+    if (isAuthenticated) router.push("/content")
+  }, [isAuthenticated]);
+  const onSubmit = (values: IRegisterForm) => {
+    signUp(values);
   };
 
   const {

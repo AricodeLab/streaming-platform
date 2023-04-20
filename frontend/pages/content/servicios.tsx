@@ -2,9 +2,10 @@ import { useEffect,useContext } from "react";
 import Layout from "../../components/layout";
 import { AuthContext } from "../../context/AuthContext";
 import VideoPlay from "../../components/videoPlayer";
-import {api} from "../../service/api"
+import {recoverUserInfo} from "../../service/api"
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
+
 export  default function Web() {
 
   return (
@@ -17,16 +18,29 @@ export  default function Web() {
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  const { ['nextauth.token']: token } = parseCookies(ctx)
+  const cokkies  = parseCookies(ctx)
+  const { ['Authentication']: token } = cokkies
   if (!token) {
+   
     return {
       redirect: {
-        destination: '/',
+        destination: `/?message=${encodeURIComponent("Hace Login para acessar servicios")}`,
         permanent: false,
-      }
+      },
     }
   }
 
+  try{
+    await recoverUserInfo(cokkies)
+  } catch(e){
+    return {
+      redirect: {
+        destination: `/?message=${encodeURIComponent(e.response.data.message|| "error")}`,
+        permanent: false,
+      },
+    }
+  }
+  
 
 
   return {

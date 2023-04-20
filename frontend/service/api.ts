@@ -1,14 +1,24 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
 
-const { "nextauth.token": token } = parseCookies();
+const cokkies = parseCookies();
 
 export const api = axios.create({
-  baseURL: "http://localhost:3000", // url do backend
+  baseURL: "http://localhost:3000",
+  withCredentials: true,
 });
+const { Authentication: token } = cokkies;
+if (token) api.defaults.headers.Authorization = `${token}`;
 
-if (token) api.defaults.headers.Authorization = `Bearer ${token}`;
+export async function recoverUserInfo(cokkies?) {
+  if (cokkies) {
+    const { Authentication: token } = cokkies;
+    if (token) api.defaults.headers.Authorization = `${token}`;
+  }
 
-export async function recoverUserInfo() {
-  return api.get("/users/me");
+  return api.get("/users/me", {
+    headers: {
+      Cookie: `Authentication=${cokkies.Authentication}`
+    },
+  });
 }

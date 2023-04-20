@@ -13,11 +13,15 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
+          
           const cookie: string = request?.headers?.cookie;
+         
           if(!cookie){
-            throw new UnauthorizedException("JWT invalido");
+            throw new UnauthorizedException("No has hecho login");
           }
-          return cookie.split('=')[1];
+          const token = /Authentication=([^;]+)/.exec(cookie)
+       
+          return token[1]
         },
       ]),
       secretOrKey: process.env.JWT_SECRET,

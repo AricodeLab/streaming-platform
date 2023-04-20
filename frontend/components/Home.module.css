@@ -3,10 +3,18 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 6rem;
+    padding: 3rem;
     min-height: 100vh;
   }
-  
+  @media (max-width: 767px) {
+    /* Apply styles for screens up to 767 pixels wide, which is the size of a phone screen */
+    .main {
+      padding: 0.5rem;
+    }
+  }
+  .current{
+
+  }
   .description {
     display: inherit;
     justify-content: inherit;
