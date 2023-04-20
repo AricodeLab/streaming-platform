@@ -73,7 +73,7 @@ export class UsersController {
     response = result[1];
     this.addOrUpdateUserTokens(user.email, token);
 
-    response.send({ msg: 'you are login' });
+    response.send({ msg: 'you are login', token: token });
   }
 
   @UseGuards(JwtAuthGuard)

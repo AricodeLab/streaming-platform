@@ -13,39 +13,40 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user: User, response: Response): Promise<[string,Response]> {
-
+  async login(user: User, response: Response): Promise<[string, Response]> {
     const tokenPayload = {
       userId: user.id.toString(),
     };
-  
-    if (user.plazo.getTime() > new Date().getTime()){
+
+    if (user.plazo.getTime() < new Date().getTime()) {
       throw new UnauthorizedException('Cuenta con plazo vencido');
     }
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + +process.env.JWT_EXPIRATION);
 
     const token = this.jwtService.sign(tokenPayload);
-    
-    return [token ,response.cookie('Authentication', token, {
-      httpOnly: true,
-      expires,
-    })];
+
+    return [
+      token,
+      response.cookie('Authentication', token, {
+        httpOnly: true,
+        expires,
+      }),
+    ];
   }
-  
 
   async validateUser(email: string, password: string) {
     const user = await User.findOneBy({ email: email });
 
-    const passwordIsValid = password == user.password
-   
+    const passwordIsValid = password == user.password;
+
     if (!passwordIsValid) {
       throw new UnauthorizedException('Email o contrasena equivocada.');
     }
 
     return user;
   }
-  
+
   // get all users
   async findall(): Promise<User[]> {
     return await this.usersRepository.find();
