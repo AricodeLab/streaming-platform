@@ -3,17 +3,17 @@ FROM node:16.14.2
 
 # Set the working directory
 
-
+RUN npm i -g pnpm
 # Copy the package.json and yarn.lock files
 COPY . .
 # Install the dependencies
-RUN yarn install
+RUN pnpm install
 
 # Build the project
-RUN yarn build
+RUN pnpm build
 
 # Expose the port for the microservices
 EXPOSE 3000
 
 # Start the microservices
-CMD ["yarn", "run", "dev"]
+CMD ["pnpm", "run", "dev"]

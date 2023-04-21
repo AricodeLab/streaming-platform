@@ -1,5 +1,5 @@
 import Image from "next/image";
-import img from "../public/images/logo.png";
+import img from "../public/favicon.ico";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -17,8 +17,8 @@ function Navbar() {
     <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         <div className="flex items-center">
-          <Image src={img} alt="Flowbite Logo" width={60} height={500} priority />
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+          <Image src={img} alt="Flowbite Logo" height={45} width={45}  priority />
+          <span className="self-center ml-4 text-xl font-semibold whitespace-nowrap dark:text-white">
             Smartv Premium
           </span>
         </div>

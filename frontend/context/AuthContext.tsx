@@ -1,69 +1,67 @@
-import  { createContext, useEffect, useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { createContext, useState, useEffect } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
-import Router from "next/router";
 import { api, recoverUserInfo } from "../service/api";
 
-type AuthContextType = {
-  isAuthenticated: boolean;
-  user: User | null;
-  signIn: (data: FormData) => Promise<void>;
-  singUp: (data: FormData) => Promise<void>;
-  logOut: () => void;
-};
-
-type FormData = {
+type User = {
   email: string;
   password: string;
-  username?: string;
-  name?: string;
 };
 
-type User = {
-  name: string;
-  email: string;
-  username: string;
-};
+interface AuthContextData {
+  isAuthenticated: boolean;
+  signUp: (data: User) => void;
+  logout: () => void;
+  user: User;
+  error: string;
+  setError: (errorMessage: string) => void;
+  setIsAuthenticated: (Authenticated: boolean) => void;
+}
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export function AuthProvider({ children }: any) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const isAuthenticated = !!user;
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const { "nextauth.token": token } = parseCookies();
-    if (token) recoverUserInfo().then((res) => console.log(res.data.name));
-  }, []);
-
-  const logOut = () => destroyCookie(undefined, "nextauth");
-
-  const singUp = async (data: FormData) => {
+  const signUp = async (data: User) => {
     try {
-      const res: any = await await (await api.post("user/create", data)).data;
-
-      if (res === "OK") {
-        const { email, password } = data;
-        await signIn({ email, password });
+      const response = await api.post<{ msg: string; token: string }>(
+        "/users/login",
+        data
+      );
+   
+      if (response.status == 201) {
+        const { msg, token } = response.data;
+        setCookie(undefined, "Authentication", token);
+        api.defaults.headers["Authorization"] = `Bearer ${token}`;
+        setIsAuthenticated(true);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+
+
+      console.log(e)
+      setError(e.response.data.message);
     }
   };
 
-  const signIn = async ({ email, password }: FormData) => {
-    const { token, user }: any = await (
-      await api.post("/login", { email, password })
-    ).data;
-
-    setCookie(undefined, "nextauth", token, {
-      maxAge: 60 * 60 * 1, // 1h
-    });
-    api.defaults.headers["Authorization"] = `Bearer ${token}`;
-    setUser(user);
-    await Router.push("/content");
+  const logout = () => {
+    destroyCookie(undefined, "Authentication") && setIsAuthenticated(false);
   };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, singUp,logOut }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        signUp,
+        logout,
+        user,
+        error,
+        setError,
+        setIsAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -58,7 +58,7 @@ const VideoPlayer: FC<Props> = () => {
 
 				return {
 					id: index + 1,
-					title: info[0],
+					title: info[0].charAt(0).toUpperCase() + info[0].slice(1),
 					streaming_url: info[1],
 				};
 			})
@@ -84,13 +84,13 @@ const VideoPlayer: FC<Props> = () => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
 
-			<h1 className={styles.title}>TV SPAÑA</h1>
+			<h1 className={styles.title}>Lista de contenido</h1>
 
 			<div className={styles.grid}>{channelsList}</div>
 
 			{selected ? (
 				<div>
-					<h1>{selected.title}</h1>
+					<h1 className={styles.current}>{selected.title}</h1>
 					<p>estas mirando: {selected.title}</p>
 					<ReactPlayer
 						className="player-wrapper"
