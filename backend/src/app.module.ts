@@ -19,4 +19,5 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
   ],
 })
+console.log(process.env.DB_HOST)
 export class AppModule {}
