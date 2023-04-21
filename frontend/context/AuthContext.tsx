@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (data: User) => {
     try {
       const response = await api.post<{ msg: string; token: string }>(
-        "/users/login",
+        "http://localhost:3001/users/login",
         data
       );
    

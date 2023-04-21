@@ -4,7 +4,6 @@ import { parseCookies } from "nookies";
 const cokkies = parseCookies();
 
 export const api = axios.create({
-  baseURL: "http://localhost:3001",
   withCredentials: true,
 });
 const { Authentication: token } = cokkies;
@@ -16,7 +15,7 @@ export async function recoverUserInfo(cokkies?) {
     if (token) api.defaults.headers.Authorization = `${token}`;
   }
 
-  return api.get("/users/me", {
+  return api.get("http://backend:3001/users/me", {
     headers: {
       Cookie: `Authentication=${cokkies.Authentication}`
     },

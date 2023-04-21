@@ -3,6 +3,8 @@ version: '3'
 services:
   db:
     image: postgres:15.1-alpine3.17
+    networks:
+      - my-network
     ports:
       - 5432:5432
     environment:
@@ -20,10 +22,13 @@ services:
       - "5050:80"
     depends_on:
       - db
+    networks:
+      - my-network
   backend:
+    container_name: backend
     build: ./backend
     ports:
-      - 3000:3000
+      - 3001:3001
     depends_on:
       - db
     environment:
@@ -31,28 +36,35 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=workdb123
-      - FRONT_URL=http://localhost:3000
+      - FRONT_URL=http://frontend:3000
       - DB_NAME=work_db
       - JWT_SECRET=secret
       - JWT_EXPIRATION=864000
+    networks:
+      - my-network
+
+     
 
   frontend:
+    container_name: frontend
     build: ./frontend
     ports:
       - 3000:3000
     volumes:
       - ./frontend:/apps
     environment:
-      - BACKEND_URL=http://localhost:3001
+      - BACKEND_URL=http://backend:3001
     restart: always
+    depends_on:
+      - backend
     networks:
-      - frontend
+      - my-network
+
+      
   # Bom configurar o kafka em outro docker-compose.yml
 networks:
-  servidor:
-    # Deixa asssim, só remove se atrapalhar em algo, é pro kafka
-    driver: bridge
-  frontend:
+    my-network:
+      driver: bridge
 volumes:
   pgdata:
   backend:

@@ -14,6 +14,7 @@ export class UsersService {
   ) {}
 
   async login(user: User, response: Response): Promise<[string, Response]> {
+    console.log('foi no login')
     const tokenPayload = {
       userId: user.id.toString(),
     };
@@ -36,6 +37,7 @@ export class UsersService {
   }
 
   async validateUser(email: string, password: string) {
+    console.log('validate')
     const user = await User.findOneBy({ email: email });
     if(!user){
       throw new UnauthorizedException('Email o contraseña equivocada.');

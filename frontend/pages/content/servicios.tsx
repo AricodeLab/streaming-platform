@@ -33,9 +33,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try{
     await recoverUserInfo(cokkies)
   } catch(e){
+    console.log(e)
     return {
       redirect: {
-        destination: `/?message=${encodeURIComponent(e.response.data.message|| "error")}`,
+        destination: `/?message=${encodeURIComponent(e.response?.data?.message|| "error")}`,
         permanent: false,
       },
     }
