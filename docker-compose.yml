@@ -31,6 +31,7 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=workdb123
+      - FRONT_URL=http://localhost:3000
       - DB_NAME=work_db
       - JWT_SECRET=secret
       - JWT_EXPIRATION=864000
@@ -38,9 +39,11 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - 3001:3000
+      - 3000:3000
     volumes:
       - ./frontend:/apps
+    environment:
+      - BACKEND_URL=http://localhost:3001
     restart: always
     networks:
       - frontend

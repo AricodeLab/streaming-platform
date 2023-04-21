@@ -4,7 +4,7 @@ import { parseCookies } from "nookies";
 const cokkies = parseCookies();
 
 export const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:3001",
   withCredentials: true,
 });
 const { Authentication: token } = cokkies;

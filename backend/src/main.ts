@@ -6,10 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin:'https://a83f-186-49-44-203.ngrok-free.app',
-    
+    origin:process.env.FRONT_URL,
     credentials:true
   });
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
