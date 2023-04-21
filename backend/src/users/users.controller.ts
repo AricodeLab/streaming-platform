@@ -21,7 +21,7 @@ export class UsersController {
 
   @Get()
   test(): string {
-    return 'hello world';
+    return 'hello wold';
   }
   @UseGuards(LocalAuthGuard)
   @Post('login')
