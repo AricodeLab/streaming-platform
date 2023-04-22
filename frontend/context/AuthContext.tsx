@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (data: User) => {
     try {
       const response = await api.post<{ msg: string; token: string }>(
-        "http://localhost:3001/users/login",
+        "https://streaming-platform-ptuh.onrender.com/users/login",
         data
       );
    

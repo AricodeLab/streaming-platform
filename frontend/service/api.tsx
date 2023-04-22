@@ -15,7 +15,7 @@ export async function recoverUserInfo(cokkies?) {
     if (token) api.defaults.headers.Authorization = `${token}`;
   }
 
-  return api.get("http://backend:3001/users/me", {
+  return api.get("https://streaming-platform-ptuh.onrender.com/users/me", {
     headers: {
       Cookie: `Authentication=${cokkies.Authentication}`
     },
