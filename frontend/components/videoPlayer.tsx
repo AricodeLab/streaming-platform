@@ -38,7 +38,7 @@ const VideoPlayer: FC<Props> = () => {
 	const fetchChannels = async () => {
 		try {
 			const iptv = await axios.get(
-				'https://raw.githubusercontent.com/mario1234563119/tvfs/main/plalistfuls.txt',
+				'https://raw.githubusercontent.com/mario1234563119/AEXQOSyIpN2JZ0eh/main/iptvs.m3u',
 			);
 			const channelsData = m3uToObj(iptv.data);
 			setChannels(channelsData);
