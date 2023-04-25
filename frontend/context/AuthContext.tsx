@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (data: User) => {
     try {
       const response = await api.post<{ msg: string; token: string }>(
-        "/users/login",
+        "https://backend-vx8e.onrender.com/users/login",
         data
       );
    

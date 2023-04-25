@@ -1,10 +1,10 @@
 .main {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     padding: 3rem;
-    min-height: 100vh;
+    padding-bottom: unset;
+   
   }
   @media (max-width: 767px) {
     /* Apply styles for screens up to 767 pixels wide, which is the size of a phone screen */
@@ -12,8 +12,31 @@
       padding: 0.5rem;
     }
   }
+  .title{
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid;
+    font-weight: 700;
+  }
+  .selected{
+    color: rgb(58, 58, 206);
+    text-align: center;
+  }
+
   .current{
 
+    background: blue;
+    border-radius: 30px;
+    padding: 0.4rem;
+    font-weight: bold;
+    width: fit-content;
+  }
+  .video{
+
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
   }
   .description {
     display: inherit;
@@ -50,8 +73,8 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(25%, auto));
-    width: var(--max-width);
     max-width: 100%;
+  
   }
   
   .card {
@@ -142,7 +165,6 @@
     .grid {
       grid-template-columns: 1fr;
       margin-bottom: 120px;
-      max-width: 320px;
       text-align: center;
     }
   

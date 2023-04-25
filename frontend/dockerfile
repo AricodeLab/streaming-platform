@@ -10,10 +10,9 @@ COPY . .
 RUN pnpm install
 
 # Build the project
-RUN pnpm build
-
+RUN pnpm run build
 # Expose the port for the microservices
 EXPOSE 3000
 
 # Start the microservices
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "run", "start"]

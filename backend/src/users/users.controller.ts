@@ -17,6 +17,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtAuthGuard, LocalAuthGuard } from 'src/guards';
 import { CurrentUser } from './currentUser.decorator';
 import { Response } from 'express';
+import { CreateUser } from 'src/dto/CreateUserDto';
 
 interface UsersTokens {
   userEmail: string;
@@ -63,16 +64,16 @@ export class UsersController {
 
     const userTokens = this.Invalidtokens[userIndex].userTokens;
     const lastToken = userTokens[userTokens.length - 1];
-    console.log(token +"|||" + lastToken)
+
     return token === lastToken;
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
-    @CurrentUser() user: User,
+    @Body() body: CreateUser,
     @Res({ passthrough: true }) response: Response,
   ) {
+    const user = await this.usersService.validateUser(body.email, body.password)
     const result: [string, Response] = await this.usersService.login(
       user,
       response,
@@ -88,12 +89,13 @@ export class UsersController {
   @Get('me')
   async getUser(@CurrentUser() user: User, @Req() request) {
     
-    console.log(this.Invalidtokens);
+
+    console.log("chegou no controler")
     const cookie = request?.headers.cookie;
     if (!this.isTokenValid(user.email, cookie.split('=')[1])) {
       throw new UnauthorizedException('Usuario ya ha hecho login en otro dispositivo o necesitas hacer login de vuelta');
     }
-
+    console.log("chegou cookie n usado")
     delete user.password;
     return user;
   }
