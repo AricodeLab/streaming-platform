@@ -37,19 +37,9 @@ const VideoPlayer: FC<Props> = ({ streaming_url }) => {
     }
   };
 
-<<<<<<< HEAD
-	const fetchChannels = async () => {
-		try {
-			const iptv = await axios.get(
-				'https://raw.githubusercontent.com/mario1234563119/AEXQOSyIpN2JZ0eh/main/iptvs.m3u',
-			);
-			const channelsData = m3uToObj(iptv.data);
-			setChannels(channelsData);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-=======
+
+
+
   const m3uToObj = (m3u: string): Channel[] => {
     return m3u
       .replace("#EXTM3U", "")
@@ -58,8 +48,6 @@ const VideoPlayer: FC<Props> = ({ streaming_url }) => {
       .map(function (str: string, index: number) {
         const line = str.split(",");
         const info = line[1].split("\n");
->>>>>>> 959ec7ba732d784637fef3974a9d3b8a0fffe8a5
-
         return {
           id: index + 1,
           title: info[0].charAt(0).toUpperCase() + info[0].slice(1),

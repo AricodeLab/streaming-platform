@@ -4,7 +4,6 @@ import { parseCookies } from "nookies";
 const cokkies = parseCookies();
 
 export const api = axios.create({
-<<<<<<< HEAD:frontend/service/api.ts
   baseURL: "https://8b32-186-49-44-203.ngrok-free.app",
 });
 const { Authentication: token } = cokkies;
