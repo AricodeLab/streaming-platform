@@ -1,5 +1,6 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
+import { ILogin } from "../interfaces";
 
 const cokkies = parseCookies();
 
@@ -21,3 +22,6 @@ export async function recoverUserInfo(cokkies?) {
     },
   });
 }
+
+
+

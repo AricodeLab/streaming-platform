@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import * as S from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Trash } from "@phosphor-icons/react";
+import { useAuth } from "../../../hooks/useAuth";
+import { useDisclosure } from "@chakra-ui/react";
 
 const schema = z.object({
   email: z.string().email("Email inválido").nonempty("Não pode está vazia"),
@@ -11,22 +13,26 @@ const schema = z.object({
     .string()
     .min(6, "Senha deve ter pelo menos 6 caracteres")
     .nonempty("Não pode está vazia"),
+  plazo: z.date().min(new Date(), "Fecha no puede ser antes"),
 });
 
 interface AddUserFormInputs {
   email: string;
   password: string;
+  plazo: Date;
 }
 
 interface User {
   id: number;
   email: string;
-  plazo?: Date;
+  plazo: Date;
 }
 
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
+ 
   const [editingUser, setEditingUser] = useState(null);
+  const deleted = useDisclosure()
   const toast = S.useToast();
   const {
     handleSubmit,
@@ -34,10 +40,12 @@ function Dashboard() {
     reset,
     formState: { errors },
   } = useForm<AddUserFormInputs>({ resolver: zodResolver(schema) });
+  const { signUp, isAuthenticated } = useAuth();
+  const cancelRef = useRef(null)
 
-  const users: User[] = [{ id: 11515, email: "bob@example.com", plazo: new Date() }];
-
-  const onSubmit = (data: AddUserFormInputs) => {
+  const users: User[] = [{ id: 11515, email: "bob@example.com", plazo: new Date() },{ id: 16515, email: "gay@example.com", plazo: new Date() }];
+  const onSubmit = (data: any) => {
+    console.log(data);
     toast({
       title: "Usuario deletado com sucesso",
       status: "info",
@@ -60,14 +68,16 @@ function Dashboard() {
 
   const handleEditUser = (user: User) => {
     handleOpenModal();
+
     if (!!errors.password && !!errors.email) return;
-    else {
-      setEditingUser(user);
-      handleCloseModal();
-    }
+
+    setEditingUser(user);
+    handleCloseModal();
   };
 
   const handleRemoveUser = (user_id: number) => {
+    console.log(cancelRef)
+    
     toast({
       title: "Usuario deletado com sucesso",
       status: "info",
@@ -89,6 +99,7 @@ function Dashboard() {
       handleCloseModal();
     }
   };
+  console.log(cancelRef)
 
   return (
     <S.Box p="4" textAlign="center" placeContent="center">
@@ -97,12 +108,12 @@ function Dashboard() {
       </S.Heading>
       <S.Flex flexDirection="column" p="16" m="auto">
         <S.Button alignSelf="flex-end" colorScheme="green" onClick={handleOpenModal}>
-Agregar usuario
+          Agregar usuario
         </S.Button>
         <S.Table variant="simple" color="white">
           <S.TableCaption>Lista de Usuários</S.TableCaption>
           <S.Thead>
-            <S.Tr >
+            <S.Tr>
               <S.Th>Id</S.Th>
               <S.Th>E-mail</S.Th>
               <S.Th>Plazo</S.Th>
@@ -126,13 +137,41 @@ Agregar usuario
                     aria-label="Remover"
                     icon={<Trash size={32} />}
                     colorScheme="red"
-                    onClick={() => handleRemoveUser(user.id)}
+                    onClick={deleted.onOpen}
                   />
                 </S.Td>
               </S.Tr>
             ))}
           </S.Tbody>
         </S.Table>
+       
+          <S.AlertDialog
+            isCentered
+            isOpen={deleted.isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={()=>console.log(cancelRef)}
+          >
+            <S.AlertDialogOverlay>
+              <S.AlertDialogContent>
+                <S.AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Delete Customer
+                </S.AlertDialogHeader>
+
+                <S.AlertDialogBody>
+                  Are you sure? You cant undo this action afterwards.
+                </S.AlertDialogBody>
+
+                <S.AlertDialogFooter>
+                  <S.Button onClick={deleted.onClose}>Cancel</S.Button>
+                  <S.Button colorScheme="red" ml={3} onClick={()=>{cancelRef.current = user;deleted.onClose()}}>
+                    Delete
+                  </S.Button>
+                </S.AlertDialogFooter>
+              </S.AlertDialogContent>
+            </S.AlertDialogOverlay>
+          </S.AlertDialog>
+      
+
         <S.Modal
           isCentered
           isOpen={isOpen}
@@ -157,6 +196,11 @@ Agregar usuario
                   <S.Input type="password" {...register("password")} />
                   <S.FormErrorMessage>{errors?.password?.message}</S.FormErrorMessage>
                 </S.FormControl>
+                <S.FormControl mt={4} isInvalid={!!errors.plazo}>
+                  <S.FormLabel>Plazo</S.FormLabel>
+                  <S.Input type="date" {...register("plazo", { valueAsDate: true })} />
+                  <S.FormErrorMessage>{errors?.plazo?.message}</S.FormErrorMessage>
+                </S.FormControl>
               </S.ModalBody>
               <S.ModalFooter>
                 <S.Button
@@ -167,7 +211,7 @@ Agregar usuario
                 >
                   Cancelar
                 </S.Button>
-                <S.Button colorScheme="green" type="submit" onClick={handleSaveUser}>
+                <S.Button colorScheme="green" type="submit">
                   Ahorrar
                 </S.Button>
               </S.ModalFooter>

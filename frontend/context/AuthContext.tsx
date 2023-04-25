@@ -10,12 +10,14 @@ type User = {
 
 interface AuthContextData {
   isAuthenticated: boolean;
-  signUp: (data: User) => void;
+  isAdmin: boolean
+  signUp: (data: User, forAdm?: boolean) => void;
   logout: () => void;
   user: User;
   error: string;
   setError: (errorMessage: string) => void;
   setIsAuthenticated: (Authenticated: boolean) => void;
+  setIsAdmin: (isAdmin: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -24,8 +26,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const signUp = async (data: User) => {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const signUp = async (data: User,forAdm?: boolean) => {
     try {
       const response = await api.post<{ msg: string; token: string }>(
         "https://backend-vx8e.onrender.com/users/login",
@@ -37,6 +39,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCookie(undefined, "Authentication", token);
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
         setIsAuthenticated(true);
+        if (forAdm){
+          setIsAdmin(true)
+        }
       }
     } catch (e) {
 
@@ -54,12 +59,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isAdmin,
         signUp,
         logout,
         user,
         error,
         setError,
         setIsAuthenticated,
+        setIsAdmin
       }}
     >
       {children}

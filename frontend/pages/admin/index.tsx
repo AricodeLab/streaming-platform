@@ -2,6 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as S from "@chakra-ui/react";
+import { useAuth } from "../../hooks/useAuth";
+import { ILogin } from "../../interfaces";
 
 type LoginFormInputs = {
   email: string;
@@ -21,9 +23,10 @@ function Admin() {
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(schema),
   });
+  const { signUp,isAdmin,setIsAdmin } = useAuth();
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    console.table(data);
+  const onSubmit: SubmitHandler<LoginFormInputs> = (data: ILogin) => {
+    signUp(data,true)
   };
   return (
     <S.Flex
