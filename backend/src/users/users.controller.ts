@@ -117,7 +117,7 @@ export class UsersController {
   
 
   //create user
-  @Get()
+  @Get("createAdmin")
   async createAdmin(): Promise<User> {
     var user = new User()
     user.email = 'admin@example.com'
