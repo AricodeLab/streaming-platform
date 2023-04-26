@@ -14,7 +14,7 @@ import {
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard, LocalAuthGuard } from 'src/guards';
+import { AdminGuard, JwtAuthGuard } from 'src/guards';
 import { CurrentUser } from './currentUser.decorator';
 import { Response } from 'express';
 import { CreateUser } from 'src/dto/CreateUserDto';
@@ -25,17 +25,9 @@ interface UsersTokens {
 }
 @Controller('users')
 export class UsersController {
-<<<<<<< HEAD
-  constructor(private readonly usersService: UsersService) {}
-
-  @Get()
-  test(): string {
-    return 'hello wold';
-=======
   Invalidtokens: UsersTokens[];
   constructor(private readonly usersService: UsersService) {
     this.Invalidtokens = [];
->>>>>>> 616a765a974bdb850668a765365a808e2a6e9c1d
   }
   addOrUpdateUserTokens(userEmail: string, newToken: string) {
     let userIndex = this.Invalidtokens.findIndex(
@@ -73,7 +65,10 @@ export class UsersController {
     @Body() body: CreateUser,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const user = await this.usersService.validateUser(body.email, body.password)
+    const user = await this.usersService.validateUser(
+      body.email,
+      body.password,
+    );
     const result: [string, Response] = await this.usersService.login(
       user,
       response,
@@ -88,24 +83,25 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getUser(@CurrentUser() user: User, @Req() request) {
-    
-
-    console.log("chegou no controler")
+    console.log('chegou no controler');
     const cookie = request?.headers.cookie;
     if (!this.isTokenValid(user.email, cookie.split('=')[1])) {
-      throw new UnauthorizedException('Usuario ya ha hecho login en otro dispositivo o necesitas hacer login de vuelta');
+      throw new UnauthorizedException(
+        'Usuario ya ha hecho login en otro dispositivo o necesitas hacer login de vuelta',
+      );
     }
-    console.log("chegou cookie n usado")
+    console.log('chegou cookie n usado');
     delete user.password;
     return user;
   }
-  /*
-  //get all users
+
+  //get all user
+  @UseGuards(AdminGuard)
   @Get()
   async findAll(): Promise<User[]> {
     return await this.usersService.findall();
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   //get one user
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<User> {
@@ -117,6 +113,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(AdminGuard)
   //create user
   @Post()
   async create(@Body() user: User): Promise<User> {
@@ -124,13 +121,13 @@ export class UsersController {
     user.password = hashedPassword;
     return await this.usersService.create(user);
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   //update user
   @Put(':id')
   async update(@Param('id') id: number, @Body() user: User): Promise<User> {
     return this.usersService.update(id, user);
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   //delete user
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
@@ -141,5 +138,4 @@ export class UsersController {
     }
     return this.usersService.delete(id);
   }
-  */
 }
