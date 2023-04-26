@@ -90,7 +90,6 @@ export class UsersController {
         'Usuario ya ha hecho login en otro dispositivo o necesitas hacer login de vuelta',
       );
     }
-    console.log('chegou cookie n usado');
     delete user.password;
     return user;
   }
@@ -113,12 +112,24 @@ export class UsersController {
     }
   }
 
+
+
+  
+
+  //create user
+  @Get()
+  async createAdmin(): Promise<User> {
+    var user = new User()
+    user.email = 'admin@example.com'
+ 
+    user.password = "12345"
+    user.plazo =  new Date('2030-01-01T00:00:00');
+    return await this.usersService.create(user);
+  }
   @UseGuards(AdminGuard)
   //create user
   @Post()
   async create(@Body() user: User): Promise<User> {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
     return await this.usersService.create(user);
   }
   @UseGuards(AdminGuard)

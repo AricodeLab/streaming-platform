@@ -6,4 +6,6 @@ export class CreateUser{
     @IsString()
     password:string
 
+    plazo: string
+
 }
