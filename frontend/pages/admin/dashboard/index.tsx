@@ -163,7 +163,7 @@ function Dashboard() {
 
                 <S.AlertDialogFooter>
                   <S.Button onClick={deleted.onClose}>Cancel</S.Button>
-                  <S.Button colorScheme="red" ml={3} onClick={()=>{cancelRef.current = user;deleted.onClose()}}>
+                  <S.Button colorScheme="red" ml={3} onClick={()=>{cancelRef.current = users;deleted.onClose()}}>
                     Delete
                   </S.Button>
                 </S.AlertDialogFooter>
