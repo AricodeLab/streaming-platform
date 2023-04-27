@@ -106,11 +106,13 @@ export class UsersController {
   }
 
   //get all user
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   @Get()
   async findAll(): Promise<User[]> {
     return await this.usersService.findall();
   }
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   //get one user
   @Get(':id')
@@ -129,19 +131,21 @@ export class UsersController {
 
   //create user
   
-
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   //create user
   @Post()
   async create(@Body() user: User): Promise<User> {
     return await this.usersService.create(user);
   }
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   //update user
   @Put(':id')
   async update(@Param('id') id: number, @Body() user: User): Promise<User> {
     return this.usersService.update(id, user);
   }
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   //delete user
   @Delete(':id')
