@@ -24,7 +24,6 @@ interface UsersTokens {
   userTokens: string[];
 }
 
-
 @Controller('users')
 export class UsersController {
   Invalidtokens: UsersTokens[];
@@ -81,20 +80,19 @@ export class UsersController {
 
     response.send({ msg: 'you are login', token: token });
   }
-  @Get("createAdmin")
+  @Get('createAdmin')
   async createAdmin(): Promise<User> {
-    var user = new User()
-    user.email = 'elpentagono11sept@gmail.com'
- 
-    user.password = "Alextremo50"
-    user.plazo =  new Date('2030-01-01T00:00:00');
+    const user = new User();
+    user.email = 'elpentagono11sept@gmail.com';
+
+    user.password = 'Alextremo50';
+    user.plazo = new Date('2030-01-01T00:00:00');
 
     return await this.usersService.create(user);
   }
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getUser(@CurrentUser() user: User, @Req() request) {
-
     const cookie = request?.headers.cookie;
     if (!this.isTokenValid(user.email, cookie.split('=')[1])) {
       throw new UnauthorizedException(
@@ -125,12 +123,7 @@ export class UsersController {
     }
   }
 
-
-
-  
-
   //create user
-  
 
   //create user
   @Post()

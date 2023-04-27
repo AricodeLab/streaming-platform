@@ -14,11 +14,10 @@ export class UsersService {
   ) {}
 
   async login(user: User, response: Response): Promise<[string, Response]> {
-   
     const tokenPayload = {
       userId: user.id.toString(),
     };
-    const date = new Date().getTime()
+    const date = new Date().getTime();
     if (user.plazo.getTime() < date) {
       throw new UnauthorizedException('Cuenta con plazo vencido');
     }
@@ -37,11 +36,9 @@ export class UsersService {
   }
 
   async validateUser(email: string, password: string) {
-   
     const user = await User.findOneBy({ email: email });
-    if(!user){
+    if (!user) {
       throw new UnauthorizedException('Email o contraseña equivocada.');
-    
     }
     const passwordIsValid = password == user.password;
 
