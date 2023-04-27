@@ -8,6 +8,8 @@ export default class AdminGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
+    console.log("opa adm")
+    console.log(user)
     return user && user.email === 'elpentagono11sept@gmail.com';
   }
 }
