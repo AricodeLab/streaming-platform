@@ -131,8 +131,7 @@ export class UsersController {
 
   //create user
   
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
+
   //create user
   @Post()
   async create(@Body() user: User): Promise<User> {
