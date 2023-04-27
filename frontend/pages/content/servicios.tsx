@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 
 export  default function Web() {
-
+  
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try{
-    await recoverUserInfo(cokkies)
+    const info = await recoverUserInfo(cokkies)
   } catch(e){
     console.log(e)
     return {

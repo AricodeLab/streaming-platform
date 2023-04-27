@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: "https://frontdocker.onrender.com",
+    origin: ["https://frontdocker.onrender.com","http://localhost:3000"],
     credentials:true
   });
   await app.listen(3001);

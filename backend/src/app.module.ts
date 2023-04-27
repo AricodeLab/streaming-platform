@@ -21,4 +21,3 @@ import { ConfigModule } from '@nestjs/config';
 
 
 export class AppModule {}
-console.log(process.env)

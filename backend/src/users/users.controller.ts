@@ -23,6 +23,8 @@ interface UsersTokens {
   userEmail: string;
   userTokens: string[];
 }
+
+
 @Controller('users')
 export class UsersController {
   Invalidtokens: UsersTokens[];
@@ -86,13 +88,13 @@ export class UsersController {
  
     user.password = "Alextremo50"
     user.plazo =  new Date('2030-01-01T00:00:00');
-    console.log(user)
+
     return await this.usersService.create(user);
   }
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getUser(@CurrentUser() user: User, @Req() request) {
-    console.log('chegou no controler');
+
     const cookie = request?.headers.cookie;
     if (!this.isTokenValid(user.email, cookie.split('=')[1])) {
       throw new UnauthorizedException(
