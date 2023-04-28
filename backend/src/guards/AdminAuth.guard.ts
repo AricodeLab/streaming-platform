@@ -14,7 +14,7 @@ export default class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const info = ExtractJwt.fromExtractors([
       (request: any) => {
-        console.log(request.headers)
+        console.log(request)
         const cookie: string = request?.headers?.cookie;
 
         if (!cookie) {
