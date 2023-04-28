@@ -14,6 +14,7 @@ export default class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const info = ExtractJwt.fromExtractors([
       (request: any) => {
+        console.log(request.headers)
         const cookie: string = request?.headers?.cookie;
 
         if (!cookie) {
@@ -29,6 +30,6 @@ export default class AdminGuard implements CanActivate {
     const user = request.user;
     console.log('opa adm');
     console.log(user);
-    return user && user.email === 'elpentagono11sept@gmail.com';
+    return user && user.email === 'e@gmail.com';
   }
 }
