@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
-import * as bcrypt from 'bcrypt';
-import { AdminGuard, JwtAuthGuard } from 'src/guards';
+
+import { JwtAuthGuard } from 'src/guards';
 import { CurrentUser } from './currentUser.decorator';
 import { Response } from 'express';
 import { CreateUser } from 'src/dto/CreateUserDto';
@@ -27,8 +27,10 @@ interface UsersTokens {
 @Controller('users')
 export class UsersController {
   Invalidtokens: UsersTokens[];
+  admin: string;
   constructor(private readonly usersService: UsersService) {
     this.Invalidtokens = [];
+    this.admin = 'e@gmail.com';
   }
   addOrUpdateUserTokens(userEmail: string, newToken: string) {
     let userIndex = this.Invalidtokens.findIndex(
@@ -105,16 +107,24 @@ export class UsersController {
 
   //get all user
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
   @Get()
-  async findAll(): Promise<User[]> {
+  async findAll(@CurrentUser() ReqUser: User): Promise<User[]> {
+    if (ReqUser.email != this.admin) {
+      throw new UnauthorizedException('no sos adm');
+    }
     return await this.usersService.findall();
   }
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
+
   //get one user
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<User> {
+  async findOne(
+    @Param('id') id: number,
+    @CurrentUser() ReqUser: User,
+  ): Promise<User> {
+    if (ReqUser.email != this.admin) {
+      throw new UnauthorizedException('no sos adm');
+    }
     const user = await this.usersService.findOne(id);
     if (!user) {
       throw new Error('User not found');
@@ -127,21 +137,40 @@ export class UsersController {
 
   //create user
   @Post()
-  async create(@Body() user: User): Promise<User> {
+  async create(
+    @Body() user: User,
+    @CurrentUser() ReqUser: User,
+  ): Promise<User> {
+    if (ReqUser.email != this.admin) {
+      throw new UnauthorizedException('no sos adm');
+    }
     return await this.usersService.create(user);
   }
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
+
   //update user
   @Put(':id')
-  async update(@Param('id') id: number, @Body() user: User): Promise<User> {
+  async update(
+    @Param('id') id: number,
+    @Body() user: User,
+    @CurrentUser() ReqUser: User,
+  ): Promise<User> {
+    if (ReqUser.email != this.admin) {
+      throw new UnauthorizedException('no sos adm');
+    }
     return this.usersService.update(id, user);
   }
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
+
   //delete user
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<void> {
+  async delete(
+    @Param('id') id: number,
+    @CurrentUser() ReqUser: User,
+  ): Promise<void> {
+    if (ReqUser.email != this.admin) {
+      throw new UnauthorizedException('no sos adm');
+    }
     //handle the error if user not found
     const user = await this.usersService.findOne(id);
     if (!user) {

@@ -20,7 +20,7 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
           }
 
           const token = /Authentication=([^;]+)/.exec(cookie);
-          
+
           return token[1];
         },
       ]),
@@ -29,13 +29,12 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({ userId }: TokenPayload,request: Request) {
+  async validate({ userId }: TokenPayload) {
     const user = await this.usersService.findOne(+userId);
     if (!user) {
       throw new UnauthorizedException('Gmail o contrasena invalidos');
     }
-    // Set the authenticated user to the request.user property
-    request.user = user;
+
     return user;
   }
 }
