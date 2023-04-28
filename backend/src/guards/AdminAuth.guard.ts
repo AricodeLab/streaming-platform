@@ -12,21 +12,8 @@ export default class AdminGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const info = ExtractJwt.fromExtractors([
-      (request: any) => {
-        console.log(request)
-        const cookie: string = request?.headers?.cookie;
+    console.log(request)
 
-        if (!cookie) {
-          throw new UnauthorizedException('No has hecho login');
-        }
-
-        const token = /Authentication=([^;]+)/.exec(cookie);
-
-        return token[1];
-      },
-    ]);
-    console.log(info());
     const user = request.user;
     console.log('opa adm');
     console.log(user);
