@@ -85,7 +85,7 @@ const VideoPlayer: FC<Props> = ({ streaming_url }) => {
     
         <button onClick={()=>{
           logout()
-        }} className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow m-3">
+        }} className="bg-gray hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow m-3">
           Logout
         </button>
       </div>
