@@ -13,12 +13,14 @@ import {
   Stack,
   useBreakpointValue,
   useColorModeValue,
+  Text,
   useToast,
 } from "ui";
 import { useRouter } from "next/router";
 
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
+import Link from "next/link";
 const validationSchema = z.object({
   email: z.string().email("Email no es valido"),
   password: z.string(),
@@ -30,20 +32,31 @@ interface IRegisterForm {
 
 function RegisterForm() {
   const toast = useToast();
-  const router = useRouter();
-  const { signUp, isAuthenticated, error,setError,setIsAuthenticated } = useAuth();
+
+  const {
+    signUp,
+    isAuthenticated,
+    error,
+    setError,
+    setIsAuthenticated,
+    message,
+    router,
+  } = useAuth();
   useEffect(() => {
-   
-    if (router.query.message){
-      setError(router.query.message.toString())
+    if (router.query.message) {
+      setError(router.query.message.toString());
     }
+
     if (error) {
-      toast({ title: error, status: "error", position: "top" })
-      setIsAuthenticated(false)
-  };
-  }, [error]);
+      toast({ title: error, status: "error", position: "top" });
+      setIsAuthenticated(false);
+    }
+    if (message) {
+      toast({ title: message, status: "success", position: "top" });
+    }
+  }, [error,message]);
   useEffect(() => {
-    if (isAuthenticated) router.push("/content")
+    if (isAuthenticated) router.push("/content");
   }, [isAuthenticated]);
   const onSubmit = (values: IRegisterForm) => {
     signUp(values);
@@ -97,6 +110,14 @@ function RegisterForm() {
                 </Button>
               </Stack>
             </Stack>
+            <div style={{ padding: "0.7rem", color: "blue" }}>
+              <Text fontSize="xs">
+                <Link href="/content/contacto">
+                  {" "}
+                  Ir a la pagina de contacto del administrador
+                </Link>
+              </Text>
+            </div>
           </form>
         </Box>
       </Stack>

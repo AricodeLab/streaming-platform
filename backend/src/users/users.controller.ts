@@ -134,7 +134,7 @@ export class UsersController {
   }
 
   //create user
-
+  @UseGuards(JwtAuthGuard)
   //create user
   @Post()
   async create(

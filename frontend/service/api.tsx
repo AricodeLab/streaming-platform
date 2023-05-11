@@ -1,8 +1,10 @@
 import axios from "axios";
-import { parseCookies } from "nookies";
+import { destroyCookie, parseCookies } from "nookies";
 import { ILogin } from "../interfaces";
+import { useRouter } from "next/router";
 
 const cokkies = parseCookies();
+
 
 export const api = axios.create({
   baseURL: "https://8b32-186-49-44-203.ngrok-free.app",
