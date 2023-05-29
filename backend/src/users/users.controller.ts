@@ -82,13 +82,13 @@ export class UsersController {
 
     response.send({ msg: 'you are login', token: token });
   }
-  @Get('createAdmin')
+  @Get('create')
   async createAdmin(): Promise<User> {
     const user = new User();
-    user.email = 'elpentagono11sept@gmail.com';
+    user.email = '500@gmail.com';
 
-    user.password = 'Alextremo50';
-    user.plazo = new Date('2030-01-01T00:00:00');
+    user.password = '500';
+    user.plazo = new Date('2023-07-07T00:00:00');
 
     return await this.usersService.create(user);
   }
