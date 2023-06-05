@@ -4,9 +4,9 @@ import {recoverUserInfo} from "../../service/api"
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 
-export  default function Web({info}) {
+export  default function Web({data}) {
   const currentDate = new Date();
-  const plazoDate = new Date(info.plazo);
+  const plazoDate = new Date(data.plazo);
 
   const timeDifference = plazoDate.getTime() - currentDate.getTime();
   const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -17,7 +17,7 @@ export  default function Web({info}) {
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
-       <h1>Plazo: {info.plazo}</h1>
+       <h1>Plazo: {data.plazo.toString()}</h1>
         <h2>Time Left: {daysLeft} days, {hoursLeft} hours, {minutesLeft} minutes, {secondsLeft} seconds</h2>
         <VideoPlay id={1} title="title" streaming_url="https://raw.githubusercontent.com/Alextremo123/lista-m3u/main/ALEX"/>
       </div>
@@ -39,10 +39,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try{
-    const info = await recoverUserInfo(cokkies)
+    const {data} = await recoverUserInfo(cokkies)
+
     return {
       props: {
-        info
+        data
       },
     };
   } catch(e){
