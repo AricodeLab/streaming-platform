@@ -17,7 +17,6 @@ export  default function Web({data}) {
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
-       <h1>Plazo: {data.plazo.toString()}</h1>
         <h2>Time Left: {daysLeft} days, {hoursLeft} hours, {minutesLeft} minutes, {secondsLeft} seconds</h2>
         <VideoPlay id={1} title="title" streaming_url="https://raw.githubusercontent.com/Alextremo123/lista-m3u/main/ALEX"/>
       </div>
