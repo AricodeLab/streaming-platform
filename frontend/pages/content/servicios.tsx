@@ -11,13 +11,11 @@ export  default function Web({data}) {
   const timeDifference = plazoDate.getTime() - currentDate.getTime();
   const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
+  
   return (
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
-        <h2>Time Left: {daysLeft} days, {hoursLeft} hours, {minutesLeft} minutes, {secondsLeft} seconds</h2>
+        <h2>Tiempo restante: {daysLeft} dias y {hoursLeft} horas</h2>
         <VideoPlay id={1} title="title" streaming_url="https://raw.githubusercontent.com/Alextremo123/lista-m3u/main/ALEX"/>
       </div>
     </Layout>
