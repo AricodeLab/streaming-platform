@@ -30,7 +30,7 @@ export class UsersController {
   admin: string;
   constructor(private readonly usersService: UsersService) {
     this.Invalidtokens = [];
-    this.admin = 'e@gmail.com';
+    this.admin = '500@gmail.com';
   }
   addOrUpdateUserTokens(userEmail: string, newToken: string) {
     let userIndex = this.Invalidtokens.findIndex(
@@ -89,7 +89,7 @@ export class UsersController {
 
     user.password = '500';
     user.plazo = new Date('2023-07-07T00:00:00');
-
+    
     return await this.usersService.create(user);
   }
   @UseGuards(JwtAuthGuard)
