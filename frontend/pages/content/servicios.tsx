@@ -16,7 +16,7 @@ export  default function Web({data}) {
     <Layout>
       <div className="flex flex-col text-white w-full h-full items-center">
         <h2>Tiempo restante: {daysLeft} dias y {hoursLeft} horas</h2>
-        <VideoPlay id={1} title="title" streaming_url="https://raw.githubusercontent.com/Alextremo123/lista-m3u/main/ALEX"/>
+        <VideoPlay id={1} title="title" streaming_url="https://raw.githubusercontent.com/Alextremo123/lista-m3u/main/Smartv%20Alex"/>
       </div>
     </Layout>
   );
